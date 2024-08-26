@@ -1,44 +1,16 @@
-import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { useParams } from 'react-router-dom';
-import usePokemonList from '../../hooks/usePokemonList';
+import usePokemonDetails from '../../hooks/usePokemonDetails';
 import './pokemonDetails.css';
 
-const PokemonDetails = () => {
+const PokemonDetails = ({ pokemonName }) => {
 	let { id } = useParams();
-
-	let [pokemon, setPokemon] = useState({});
-	const [isLoading, setisLoding] = useState(true);
-
-	async function downloadDetails() {
-		const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
-		console.log(response.data);
-
-		setPokemon({
-			name: response.data.name,
-			image: response.data.sprites.other.dream_world.front_default,
-			weight: response.data.weight,
-			height: response.data.height,
-			type: response.data.types.map((t) => t.type.name),
-		});
-		setisLoding(false);
-	}
-
-	const [pokemonListState] = usePokemonList(
-		`https://pokeapi.co/api/v2/type/${pokemon.types ? pokemon.types[0] : 'fire'}`,
-		true
-	);
-
-	useEffect(() => {
-		downloadDetails();
-		console.log('list', pokemonListState);
-	}, []);
-
+	const { pokemon, pokemonListState, isLoading } = usePokemonDetails(id);
 	return (
 		<div className="pokemon-details-wrapper">
 			<img className="pokemon-details-image" src={pokemon.image} alt="" srcset="" />
 			<div className="pokemon-details-name">
-				<span>{pokemon.name}</span>{' '}
+				<span>{pokemon.name}</span>
 			</div>
 			<div className="pokemon-details-name">Weight: {pokemon.weight}</div>
 			<div className="pokemon-details-name">Height: {pokemon.height}</div>
@@ -47,10 +19,12 @@ const PokemonDetails = () => {
 			</div>
 
 			<div>
-				More {pokemon.types} Type Pokemon
+				More
+				{pokemon.type && pokemon.type.map((t) => <span key={t}> {t} </span>)}
+				Type Pokemon
 				<ul>
 					{pokemonListState.pokemonList &&
-						pokemonListState.pokemonList.map((p) => <li key={p.pokemon.url}>{p.pokemon.name}</li>)}
+						pokemonListState.pokemonList.map((p) => <li key={p.url}>{p.name}</li>)}
 				</ul>
 			</div>
 		</div>

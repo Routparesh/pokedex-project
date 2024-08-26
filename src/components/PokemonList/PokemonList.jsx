@@ -5,10 +5,7 @@ import Pokemon from '../Pokemon/Pokemon';
 import './PokemonList.css';
 
 const PokemonList = () => {
-	const [pokemonListState, setPokemonListState] = usePokemonList(
-		'https://pokeapi.co/api/v2/pokemon',
-		false
-	);
+	const [pokemonListState, setPokemonListState] = usePokemonList(false);
 
 	return (
 		<div className="pokemon-list-wrapper">

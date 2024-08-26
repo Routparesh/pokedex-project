@@ -1,10 +1,15 @@
 import React from 'react';
 import './Search.css';
 
-const Search = () => {
+const Search = ({ updateSearchterm }) => {
 	return (
 		<div className="search-wrapper">
-			<input id="pokemon-name-search" type="text" placeholder="pokemon name" />
+			<input
+				onChange={(e) => updateSearchterm(e.target.value)}
+				id="pokemon-name-search"
+				type="text"
+				placeholder="pokemon name"
+			/>
 		</div>
 	);
 };

@@ -1,11 +1,11 @@
 import axios from 'axios';
 import { useEffect, useState } from 'react';
 
-function usePokemonList(url, type) {
+function usePokemonList(type) {
 	const [pokemonListState, setPokemonListState] = useState({
 		pokemonList: [],
 		isLodding: true,
-		pokedex_url: url,
+		pokedex_url: 'https://pokeapi.co/api/v2/pokemon',
 		nextUrl: '',
 		prevUrl: '',
 	});
@@ -15,9 +15,16 @@ function usePokemonList(url, type) {
 		const pokemonResults = response.data.results;
 
 		if (type) {
+			const pokemonResults = response.data.pokemon;
+			const filteredPokemon = pokemonResults.slice(0, 5).map((poke) => ({
+				name: poke.pokemon.name,
+				url: poke.pokemon.url,
+			}));
+
 			setPokemonListState((state) => ({
 				...state,
-				pokemonList: response.data.pokemon.slice(0, 5),
+				pokemonList: filteredPokemon,
+				isLoading: false,
 			}));
 		} else {
 			const pokemonResultPromise = pokemonResults.map((pokemon) => axios.get(pokemon.url));
