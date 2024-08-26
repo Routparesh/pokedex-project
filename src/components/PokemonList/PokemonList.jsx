@@ -1,11 +1,11 @@
-import { React, useState } from 'react';
+import { React } from 'react';
 
+import usePokemonList from '../../hooks/usePokemonList';
 import Pokemon from '../Pokemon/Pokemon';
 import './PokemonList.css';
-import usePokemonList from '../../hooks/usePokemonList';
 
 const PokemonList = () => {
-	const { pokemonListState, setpokemonListState } = usePokemonList(
+	const [pokemonListState, setPokemonListState] = usePokemonList(
 		'https://pokeapi.co/api/v2/pokemon',
 		false
 	);
@@ -24,14 +24,14 @@ const PokemonList = () => {
 				<button
 					disabled={pokemonListState.prevUrl === null}
 					onClick={() => {
-						setpokemonListState({ ...pokemonListState, pokedex_url: pokemonListState.prevUrl });
+						setPokemonListState({ ...pokemonListState, pokedex_url: pokemonListState.prevUrl });
 					}}>
 					Prv
 				</button>
 				<button
 					disabled={pokemonListState.nextUrl === null}
 					onClick={() =>
-						setpokemonListState({ ...pokemonListState, pokedex_url: pokemonListState.nextUrl })
+						setPokemonListState({ ...pokemonListState, pokedex_url: pokemonListState.nextUrl })
 					}>
 					Next
 				</button>

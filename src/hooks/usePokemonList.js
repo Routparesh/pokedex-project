@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 
 function usePokemonList(url, type) {
-	const [pokemonListState, setpokemonListState] = useState({
+	const [pokemonListState, setPokemonListState] = useState({
 		pokemonList: [],
 		isLodding: true,
 		pokedex_url: url,
@@ -15,7 +15,7 @@ function usePokemonList(url, type) {
 		const pokemonResults = response.data.results;
 
 		if (type) {
-			setpokemonListState((state) => ({
+			setPokemonListState((state) => ({
 				...state,
 				pokemonList: response.data.pokemon.slice(0, 5),
 			}));
@@ -33,7 +33,7 @@ function usePokemonList(url, type) {
 				};
 			});
 
-			setpokemonListState((prevState) => ({
+			setPokemonListState((prevState) => ({
 				...prevState,
 				nextUrl: response.data.next,
 				prevUrl: response.data.previous,
@@ -47,7 +47,7 @@ function usePokemonList(url, type) {
 		downloadpokemons();
 	}, [pokemonListState.pokedex_url]);
 
-	return [pokemonListState, setpokemonListState];
+	return [pokemonListState, setPokemonListState];
 }
 
 export default usePokemonList;

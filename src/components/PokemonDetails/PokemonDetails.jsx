@@ -8,6 +8,7 @@ const PokemonDetails = () => {
 	let { id } = useParams();
 
 	let [pokemon, setPokemon] = useState({});
+	const [isLoading, setisLoding] = useState(true);
 
 	async function downloadDetails() {
 		const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
@@ -20,12 +21,14 @@ const PokemonDetails = () => {
 			height: response.data.height,
 			type: response.data.types.map((t) => t.type.name),
 		});
+		setisLoding(false);
 	}
 
-	const [pokemonListState, setpokemonListState] = usePokemonList(
-		'https://pokeapi.co/api/v2/type/fire',
+	const [pokemonListState] = usePokemonList(
+		`https://pokeapi.co/api/v2/type/${pokemon.types ? pokemon.types[0] : 'fire'}`,
 		true
 	);
+
 	useEffect(() => {
 		downloadDetails();
 		console.log('list', pokemonListState);
@@ -43,7 +46,13 @@ const PokemonDetails = () => {
 				{pokemon.type && pokemon.type.map((t) => <div key={t}>{t}</div>)}
 			</div>
 
-			<div>More Fire Type Pokemon</div>
+			<div>
+				More {pokemon.types} Type Pokemon
+				<ul>
+					{pokemonListState.pokemonList &&
+						pokemonListState.pokemonList.map((p) => <li key={p.pokemon.url}>{p.pokemon.name}</li>)}
+				</ul>
+			</div>
 		</div>
 	);
 };
