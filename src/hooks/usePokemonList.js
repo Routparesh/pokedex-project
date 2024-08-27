@@ -16,16 +16,19 @@ function usePokemonList(type) {
 
 		if (type) {
 			const pokemonResults = response.data.pokemon;
-			const filteredPokemon = pokemonResults.slice(0, 5).map((poke) => ({
-				name: poke.pokemon.name,
-				url: poke.pokemon.url,
-			}));
 
-			setPokemonListState((state) => ({
-				...state,
-				pokemonList: filteredPokemon,
-				isLoading: false,
-			}));
+			if (pokemonResults) {
+				const filteredPokemon = pokemonResults.slice(0, 5).map((poke) => ({
+					name: poke.pokemon.name,
+					url: poke.pokemon.url,
+				}));
+
+				setPokemonListState((state) => ({
+					...state,
+					pokemonList: filteredPokemon,
+					isLoading: false,
+				}));
+			}
 		} else {
 			const pokemonResultPromise = pokemonResults.map((pokemon) => axios.get(pokemon.url));
 			const pokemonData = await axios.all(pokemonResultPromise);

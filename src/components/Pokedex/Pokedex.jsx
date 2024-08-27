@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import PokemonDetails from '../PokemonDetails/PokemonDetails';
 import PokemonList from '../PokemonList/PokemonList';
 import Search from '../Search/Search';
 import './Pokedex.css';
@@ -10,7 +11,7 @@ const Pokedex = () => {
 		<div className="pokedex-wrapper">
 			<Search updateSearchterm={setSearchTerm} />
 
-			{searchTerm.length === 0 ? <PokemonList /> : ''}
+			{!searchTerm ? <PokemonList /> : <PokemonDetails key={searchTerm} pokemonName={searchTerm} />}
 		</div>
 	);
 };

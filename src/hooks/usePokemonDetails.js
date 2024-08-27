@@ -3,14 +3,20 @@ import { useEffect, useState } from 'react';
 
 import usePokemonList from './usePokemonList';
 
-function usePokemonDetails(id) {
+function usePokemonDetails(id, pokemonName) {
 	const [pokemon, setPokemon] = useState({});
 	const [isLoading, setIsLoading] = useState(true);
 	const [pokemonListState, setPokemonListState] = usePokemonList(true);
 
 	async function downloadDetails() {
 		try {
-			const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
+			let response;
+			if (pokemonName) {
+				response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemonName}`);
+			} else {
+				response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${id}`);
+			}
+
 			console.log(response.data);
 
 			setPokemon({
@@ -34,10 +40,10 @@ function usePokemonDetails(id) {
 	}
 
 	useEffect(() => {
-		if (id) {
+		if (id || pokemonName) {
 			downloadDetails();
 		}
-	}, [id]);
+	}, [id, pokemonName]);
 
 	return { pokemon, isLoading, pokemonListState };
 }

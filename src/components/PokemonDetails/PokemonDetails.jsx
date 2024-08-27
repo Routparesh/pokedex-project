@@ -5,7 +5,7 @@ import './pokemonDetails.css';
 
 const PokemonDetails = ({ pokemonName }) => {
 	let { id } = useParams();
-	const { pokemon, pokemonListState, isLoading } = usePokemonDetails(id);
+	const { pokemon, pokemonListState, isLoading } = usePokemonDetails(id, pokemonName);
 	return (
 		<div className="pokemon-details-wrapper">
 			<img className="pokemon-details-image" src={pokemon.image} alt="" srcset="" />
